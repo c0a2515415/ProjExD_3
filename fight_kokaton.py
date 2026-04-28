@@ -129,6 +129,25 @@ class Score:
         screen.blit(self.img, self.rect)   
 
 
+class Explosion:
+    """
+    爆発に関するクラス
+    """
+    def __init__(self, bomb):
+        img = pg.image.load("fig/explosion.gif")
+        self.imgs = [img, pg.transform.flip(img, True, True)]
+
+        self.rct = self.imgs[0].get_rect()
+        self.rct.center = bomb.rct.center       #爆弾と同じ位置に表示
+        self.life = 20      #爆発までの残り時間
+
+    def update(self, screen):
+        self.life -= 1
+        if self.life > 0:
+            self.img = self.imgs[self.life % 2]
+            screen.blit(self.img, self.rct)
+
+
 class Bomb:
     """
     爆弾に関するクラス
@@ -173,6 +192,7 @@ def main():
 
     score = Score()     #スコアクラスから、インスタンス作成
     beams = []
+    explo = []      #課題3、爆発用空リスト
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -189,9 +209,15 @@ def main():
         for i, beam in enumerate(beams):        #ビームの衝突判定
             if beam.rct.colliderect(bomb.rct):
                 beams[i] = None
+                explo.append(Explosion(bomb))       #課題3も衝突判定なので一緒に書いた
                 
         beams = [b for b in beams if b is not None]     #Noneじゃないやつだけbeamsに入れ、結果的にNone削除
         beams = [b for b in beams if b.rct.left < WIDTH]    #画面外に出たビーム削除
+
+
+        explo = [e for e in explo if e.life > 0]    #lifeが0より大きなものだけ代入
+        for e in explo:         #ひとつひとつの爆発を更新したい
+            e.update(screen)
         
 
         if bomb is not None:
