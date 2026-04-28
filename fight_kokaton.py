@@ -189,6 +189,9 @@ def main():
         for i, beam in enumerate(beams):        #ビームの衝突判定
             if beam.rct.colliderect(bomb.rct):
                 beams[i] = None
+                
+        beams = [b for b in beams if b is not None]     #Noneじゃないやつだけbeamsに入れ、結果的にNone削除
+        beams = [b for b in beams if b.rct.left < WIDTH]    #画面外に出たビーム削除
         
 
         if bomb is not None:
