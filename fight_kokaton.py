@@ -149,6 +149,11 @@ class Explosion:
     爆発に関するクラス
     """
     def __init__(self, bomb):
+        """
+        爆弾の画像を読み込む
+        回転させた爆弾画像も作成する
+        updateにて、2で割った余りでリストの中身を交互に切り替え、チカチカさせる
+        """
         img = pg.image.load("fig/explosion.gif")
         self.imgs = [img, pg.transform.flip(img, True, True)]
 
@@ -206,7 +211,7 @@ def main():
     tmr = 0
 
     score = Score()     #スコアクラスから、インスタンス作成
-    beams = []
+    beams = []      #課題2用リスト
     explo = []      #課題3、爆発用空リスト
     while True:
         for event in pg.event.get():
@@ -265,16 +270,7 @@ def main():
                     pg.display.update()
                     time.sleep(1)
                     return
-
-        for i, bomb in enumerate(bombs):
-            if bomb is not None:
-                if beam is not None:
-                    if beam.rct.colliderect(bomb.rct):
-                        beam = None
-                        bombs[i] = None
-                        bird.change_img(6, screen)
-                        pg.display.update()
-                        time.sleep(1)
+                
 
         bombs = [bomb for bomb in bombs if bomb is not None]
 
