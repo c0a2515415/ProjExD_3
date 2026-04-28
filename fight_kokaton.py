@@ -232,7 +232,7 @@ def main():
                 explo.append(Explosion(bomb))       #課題3も衝突判定なので一緒に書いた
                 
         beams = [b for b in beams if b is not None]     #Noneじゃないやつだけbeamsに入れ、結果的にNone削除
-        beams = [b for b in beams if b.rct.left < WIDTH]    #画面外に出たビーム削除
+        beams = [b for b in beams if b.rct.left < WIDTH and b.rct.centery < HEIGHT]    #画面外に出たビーム削除
 
 
         explo = [e for e in explo if e.life > 0]    #lifeが0より大きなものだけ代入
