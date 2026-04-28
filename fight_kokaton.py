@@ -172,12 +172,15 @@ def main():
                 time.sleep(1)
                 return
 
-        if bomb is not None:
-            if beam is not None:
-                if beam.rct.colliderect(bomb.rct):
-                    beam = None
-                    bomb = None
-                    bird.change_img(6, screen)
+        for i, bomb in enumerate(bombs):
+            if bomb is not None:
+                if beam is not None:
+                    if beam.rct.colliderect(bomb.rct):
+                        beam = None
+                        bomb[i] = None
+                        bird.change_img(6, screen)
+                        pg.display.update()
+                        time.sleep(1)
         for bomb in bombs:
             if bomb is not None:
                 if bird.rct.colliderect(bomb.rct):
