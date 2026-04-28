@@ -180,10 +180,15 @@ def main():
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 # スペースキー押下でBeamクラスのインスタンス生成
                 beam = Beam(bird)         
-                beams.append(Beam())      #課題2のために、リストに追加していく   
+                beams.append(Beam(bird))      #課題2のために、リストに追加していく   
         screen.blit(bg_img, [0, 0])
 
+        for beam in beams:
+            beam.update(screen) #ビームを更新していく
 
+        for i, beam in enumerate(beams):        #ビームの衝突判定
+            if beam.rct.colliderect(bomb.rct):
+                beams[i] = None
         
 
         if bomb is not None:
